@@ -1,0 +1,15 @@
+{
+  "name": "zero-ops-node-app",
+  "version": "1.0.0",
+  "description": "Node.js (Express) sample app for zero-ops deploy testing",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
