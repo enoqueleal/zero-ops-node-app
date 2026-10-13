@@ -1,9 +1,13 @@
 const express = require('express');
 
 const app = express();
+const router = express.Router();
 const port = process.env.PORT || 3000;
+// Must match this Application's slug exactly (derived from its name in zero-ops) — see
+// "Preparando sua aplicação para rodar sob um prefixo" in the zero-ops README.
+const PREFIX = '/node-app';
 
-const homePage = () => `<!DOCTYPE html>
+const homePage = (prefix) => `<!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="utf-8">
@@ -33,20 +37,22 @@ const homePage = () => `<!DOCTYPE html>
     <div class="card">
       <div class="row"><span class="label">Servidor respondendo em</span><span class="value">${new Date().toISOString()}</span></div>
       <div class="row"><span class="label">Runtime</span><span class="value">node ${process.version}</span></div>
-      <div class="row"><span class="label">Endpoint de teste</span><a class="value" href="/api">GET /api</a></div>
+      <div class="row"><span class="label">Endpoint de teste</span><a class="value" href="${prefix}/api">GET /api</a></div>
     </div>
-    <a class="btn" href="/api">Testar /api</a>
+    <a class="btn" href="${prefix}/api">Testar /api</a>
   </main>
   <footer>zero-ops-node-app</footer>
 </body>
 </html>`;
 
-app.get('/', (req, res) => res.type('html').send(homePage()));
-app.get('/home', (req, res) => res.type('html').send(homePage()));
+router.get('/', (req, res) => res.type('html').send(homePage(PREFIX)));
+router.get('/home', (req, res) => res.type('html').send(homePage(PREFIX)));
 
-app.get('/api', (req, res) => res.json({ status: 'API is running' }));
+router.get('/api', (req, res) => res.json({ status: 'API is running' }));
 
-app.get('/health', (req, res) => res.json({ status: 'UP' }));
+router.get('/health', (req, res) => res.json({ status: 'UP' }));
+
+app.use(PREFIX, router);
 
 app.listen(port, () => {
   console.log(`zero-ops-node-app listening on port ${port}`);
