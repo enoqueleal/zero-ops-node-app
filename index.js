@@ -3,9 +3,10 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const port = process.env.PORT || 3000;
-// Must match this Application's slug exactly (derived from its name in zero-ops) — see
-// "Preparando sua aplicação para rodar sob um prefixo" in the zero-ops README.
-const PREFIX = '/node-app';
+// Reads zero-ops's ROUTE_PREFIX env var (always injected, matching this Application's own slug) —
+// falls back to '/node-app' if it's ever missing, so this branch keeps working the same way it
+// always did for anyone not relying on the new application-route-prefix-awareness env var.
+const PREFIX = process.env.ROUTE_PREFIX || '/node-app';
 
 const homePage = (prefix) => `<!DOCTYPE html>
 <html lang="pt-br">
